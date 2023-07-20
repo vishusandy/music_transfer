@@ -1,0 +1,81 @@
+<?xml version="1.0" standalone="yes"?>
+<rhythmdb version="2.0">
+  <entry type="song">
+    <title>Dreams</title>
+    <genre>Unknown</genre>
+    <artist>Fleetwood Mac</artist>
+    <album>Rumours</album>
+    <file-size>1338</file-size>
+    <location>file:///home/andrew/Music/song_f.mp3</location>
+    <mtime>1689269975</mtime>
+    <first-seen>1689270208</first-seen>
+    <date>721720</date>
+    <media-type>audio/mpeg</media-type>
+    <composer>Unknown</composer>
+  </entry>
+  <entry type="song">
+    <title>Rocket Man</title>
+    <genre>Unknown</genre>
+    <artist>Elton John</artist>
+    <album>Honky Ch&#xE2;teau</album>
+    <file-size>1338</file-size>
+    <location>file:///home/andrew/Music/song_e.mp3</location>
+    <mtime>1689269838</mtime>
+    <first-seen>1689270208</first-seen>
+    <date>719893</date>
+    <media-type>audio/mpeg</media-type>
+    <composer>Unknown</composer>
+  </entry>
+  <entry type="song">
+    <title>Sabotage</title>
+    <genre>Unknown</genre>
+    <artist>Beastie Boys</artist>
+    <album>Ill Communication</album>
+    <file-size>1338</file-size>
+    <location>file:///home/andrew/Music/song_b.mp3</location>
+    <mtime>1689269564</mtime>
+    <first-seen>1689270208</first-seen>
+    <date>727929</date>
+    <media-type>audio/mpeg</media-type>
+    <composer>Unknown</composer>
+  </entry>
+  <entry type="song">
+    <title>Space Oddity</title>
+    <genre>Unknown</genre>
+    <artist>David Bowie</artist>
+    <album>David Bowie</album>
+    <file-size>1338</file-size>
+    <location>file:///home/andrew/Music/song_d.mp3</location>
+    <mtime>1689269772</mtime>
+    <first-seen>1689270208</first-seen>
+    <date>718798</date>
+    <media-type>audio/mpeg</media-type>
+    <composer>Unknown</composer>
+  </entry>
+  <entry type="song">
+    <title>Walk This Way</title>
+    <genre>Unknown</genre>
+    <artist>Aerosmith</artist>
+    <album>Toys in the Attic</album>
+    <file-size>1338</file-size>
+    <location>file:///home/andrew/Music/song_a.mp3</location>
+    <mtime>1689269564</mtime>
+    <first-seen>1689270208</first-seen>
+    <date>720989</date>
+    <media-type>audio/mpeg</media-type>
+    <composer>Unknown</composer>
+  </entry>
+  <entry type="song">
+    <title>Should I Stay or Should I Go</title>
+    <genre>Unknown</genre>
+    <artist>The Clash</artist>
+    <album>Combat Rock</album>
+    <file-size>1338</file-size>
+    <location>file:///home/andrew/Music/song_c.mp3</location>
+    <mtime>1689269650</mtime>
+    <first-seen>1689270208</first-seen>
+    <date>723546</date>
+    <media-type>audio/mpeg</media-type>
+    <composer>Unknown</composer>
+  </entry>
+</rhythmdb>

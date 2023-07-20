@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "app"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+version = "0.0.1"
+# dynamic = ["version"]
+dependencies = ['simple-term-menu', 'tinytag']
+
+[project.optional-dependencies]
+test = ['mypy']
+
+[tool.setuptools.packages.find]
+where = ["src"]
