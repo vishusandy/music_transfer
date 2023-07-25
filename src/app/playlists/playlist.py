@@ -20,16 +20,21 @@ class Playlist(ABC):
     
     def devicePlaylistPath(self) -> str:
         name = Path(self.playlist).stem
+        
         return f'{name}.{self.ext()}'
     
     def localPlaylistPath(self) -> str:
         name = Path(self.playlist).stem
-        return str(Path(self.config.music_dir) / f'{name}.{self.ext()}')
+        
+        return str(Path(self.config.local_music_dir) / f'{name}.{self.ext()}')
     
     def songList(self) -> dict[str, Song]:
         songs = dict()
+        
         for s in self.config.parser.playlistSongs([self.playlist]):
+            # songs.add(Song(s, self.config))
             songs[s] = Song(s, self.config)
+            
         
         return songs
     

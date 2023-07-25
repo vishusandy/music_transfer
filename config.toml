@@ -4,11 +4,15 @@
 [local]
 import_source = "rhythmbox"
 # playlists will be created here
-music_dir = "/home/andrew/Music/library"
+local_music_dir = "/home/andrew/Music/library"
 
 [transfer]
-# directory to put files that are reside outside of the music library dir
-va_dir = "VA"
+method = "adb"
+va_dir = "VA"                                    # directory to put files that are reside outside of the music library dir
 playlist_format = "m3u"
-base_device_dir = "/storage/self/primary/Music"
+device_music_dir = "/storage/self/primary/Music"
+
+[adb]
 command = "adb -d push --sync \"<source_file>\" \"<base>/<dest_file>\""
+
+

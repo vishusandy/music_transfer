@@ -3,16 +3,16 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "app"
+name = "simple-term-menu"
 readme = "README.md"
 requires-python = ">=3.8"
 license = { file = "LICENSE" }
 version = "0.0.1"
-# dynamic = ["version"]
-dependencies = ['simple-term-menu', 'tinytag']
-
-[project.optional-dependencies]
-test = ['mypy']
+dependencies = [
+    'simple-term-menu >= 1.6.1',
+    'tinytag >= 1.9.0',
+    'hfilesize >= 0.1.0',
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]

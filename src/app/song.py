@@ -22,9 +22,16 @@ class Song:
         self.tags = tags
         self.dest = self.sanitize(self.findDest(config))
     
+    def __hash__(self):
+        return hash(self.file)
+    
+    def __eq__(self, other):
+        if not isinstance(other, type(self)): return NotImplemented
+        return self.file == other.file
+    
     def findDest(self, config: Config) -> str:
-        if self.file.startswith(config.music_dir):
-            return self.file[len(config.music_dir)+1:]
+        if self.file.startswith(config.local_music_dir):
+            return self.file[len(config.local_music_dir)+1:]
         else:
             p = Path(self.file)
             out = Path(config.va_dir)

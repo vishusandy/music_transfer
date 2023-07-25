@@ -1,2 +1,0 @@
-simple-term-menu == 1.6.1
-tinytag == 1.9.0

@@ -1,29 +1,28 @@
 from pathlib import Path
-import shlex, subprocess
 
 from src.app.config import Config
-from src.app.playlists.playlist import Playlist
-from src.app.playlists.m3u import M3u
 from src.app.song import Song
-from src.app.errors import InvalidPlaylistFormat
+from src.app.playlists.playlist import Playlist
+from src.app.devices.device import Device
+
 
 class Collection:
-    def __init__(self, playlists: list[str], config: Config):
+    def __init__(self, playlists: list[str], config: Config, pl_format: Playlist, device: Device):
         self.config: Config = config
-        self.selected_playlists: list[str] = playlists
+        self.playlist_names: list[str] = playlists
         self.playlists: list[Playlist] = []
         self.songs: dict[str, Song] = {}
+        self.new_songs: dict[str, Song] = {}
+        self.transfer: Device = device
 
-        match self.config.format.lower():
-            case 'm3u':
-                self.pl_class: Playlist = M3u
-            case f:
-                raise InvalidPlaylistFormat(f)
-
-        for p in self.selected_playlists:
-            c = self.pl_class(p, self.config)
+        for p in self.playlist_names:
+            c: Playlist = pl_format(p, self.config)
             self.playlists.append(c)
             self.songs |= c.songs
+            
+        for f, s in self.songs.items():
+            if not self.transfer.songExists(s):
+                self.new_songs[f] = s
 
     def createPlaylists(self, output: bool = False):
         for p in self.playlists:
@@ -32,26 +31,18 @@ class Collection:
                 print(f'created "{f}"')
 
     def transferSongs(self) -> int:
-        base = self.config.command.replace('<base>', self.config.base_device_dir)
-        
         i = 0
-        for s in self.songs.values():
-            cmd = base.replace('<source_file>', s.file) \
-                      .replace('<dest_file>', s.dest)
-            
-            subprocess.run(shlex.split(cmd), stdout=None, stderr=subprocess.PIPE, check=True)
-            
-            i += 1
+        for s in self.new_songs.values():
+            i += self.transfer.transferSong(s)
             
         return i
     
     def transferPlaylists(self):
-        base = self.config.command.replace('<base>', self.config.base_device_dir)
-        
         for p in self.playlists:
-            cmd = base.replace('<source_file>', p.localPlaylistPath()) \
-                      .replace('<dest_file>', p.devicePlaylistPath())
+            src = p.localPlaylistPath()
+            dest = self.config.device_music_dir + '/' + p.devicePlaylistPath()
+            size = Path(src).stat().st_size
             
-            subprocess.run(shlex.split(cmd), stdout=None, stderr=subprocess.PIPE, check=True)
-            
+            if not self.transfer.fileExists(dest, size):
+                self.transfer.transferFile(src, dest)
 

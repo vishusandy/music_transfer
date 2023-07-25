@@ -7,6 +7,12 @@ class InvalidPlaylistFormat(Exception):
     def __str__(self):
         return f'Invalid playlist format "{self.format}"'
 
+class InvalidTransferMethod(Exception):
+    def __init__(self, method: str):
+        self.method = method
+ 
+    def __str__(self):
+        return f'Invalid transfer method "{self.method}"'
 
 class InvalidSource(Exception):
     def __init__(self, source: str):

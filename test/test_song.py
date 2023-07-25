@@ -19,7 +19,7 @@ class SongTest(unittest.TestCase):
     def testOutsideDest(self):
         config = copy(self.config)
         music = Path().home() / 'Music'
-        config.music_dir = str(music)
+        config.local_music_dir = str(music)
         
         self.assertNotEqual(music, str(self.root))
         

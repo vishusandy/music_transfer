@@ -2,6 +2,7 @@ import unittest
 from copy import copy
 
 from src.app.config import Config
+from src.app.main import transferMethod, playlistFormat
 from .config import rbConfig
 from src.collection import Collection
 
@@ -15,18 +16,28 @@ class PlaylistTest(unittest.TestCase):
     
     def testValidFormat(self):
         cfg = copy(self.config)
-        cfg.format = 'm3u'
-        Collection([], cfg)
+        
+        cfg.playlist_format = 'm3u'
+        
+        Collection([], cfg, playlistFormat(cfg), transferMethod(cfg))
     
     @unittest.expectedFailure
     def testInvalidFormat(self):
         cfg = copy(self.config)
-        cfg.format = 'jpg'
-        Collection([], cfg)
+        cfg.playlist_format = 'jpg'
+        
+        Collection([], cfg, playlistFormat(cfg), transferMethod(cfg))
+
+    @unittest.expectedFailure
+    def testInvalidTransfer(self):
+        cfg = copy(self.config)
+        cfg.transfer_method = 'potatoes'
+        
+        Collection([], cfg, playlistFormat(cfg), transferMethod(cfg))
         
     
     def testCollectionSongs(self):
-        Collection([], self.config)
+        Collection([], self.config, playlistFormat(self.config), transferMethod(self.config))
 
 if __name__ == '__main__':
     unittest.main()

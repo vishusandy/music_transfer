@@ -17,12 +17,17 @@ class Config:
     def __init__(self, config_file: str = 'config.toml', source_file: str | None = None):
         with open(config_file, "rb") as f:
             data = tomllib.load(f)
+            
             self.parser: Source = self.sourceParser(data['local']['import_source'], source_file)
-            self.music_dir: str = data['local']['music_dir']
+            self.local_music_dir: str = data['local']['local_music_dir']
+            
+            self.transfer_method: str = data['transfer']['method']
             self.va_dir: str = data['transfer']['va_dir']
-            self.format: str = data['transfer']['playlist_format']
-            self.command: str = data['transfer']['command']
-            self.base_device_dir = data['transfer']['base_device_dir']
+            self.playlist_format: str = data['transfer']['playlist_format']
+            self.device_music_dir: str = data['transfer']['device_music_dir']
+            
+
+
 
 
 
