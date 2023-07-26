@@ -35,7 +35,8 @@ def genRbXml() -> str:
 
 def rbConfig():
     test = Path.absolute(Path(__file__)).parent
-    cfg = Config(source_file=genRbXml())
+    source_file=genRbXml()
+    cfg = Config.default(source_file)
     cfg.local_music_dir = str(test / 'assets' / 'music')
     
     return cfg

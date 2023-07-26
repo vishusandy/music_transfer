@@ -2,12 +2,14 @@ import xml.etree.ElementTree as ET
 import urllib.parse
 from pathlib import Path
 
+from platformdirs import user_data_path
+
 from .source import Source
 
 class RhythmBox(Source):
     def __init__(self, file: Path | str | None = None):
         if file is None:
-            file = Path.home() / '.local' / 'share' / 'rhythmbox' / 'playlists.xml'
+            file = user_data_path('rhythmbox') / 'playlists.xml'
         
         self.file = file
         self.xml = ET.parse(file)

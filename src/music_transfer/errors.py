@@ -21,14 +21,3 @@ class InvalidSource(Exception):
     def __str__(self):
         return f'Error: invalid source "{self.source}"'
 
-class ConfigNotExist(Exception):
-    def __init__(self, file: str):
-        self.file = file
- 
-    def __str__(self):
-        return f'''
-
-Created config file at: "{self.file}".
-
-Please edit config file and rerun
-'''

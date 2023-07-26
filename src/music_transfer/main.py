@@ -1,5 +1,3 @@
-from hfilesize import FileSize
-
 from src.music_transfer.menu import showMenu
 from music_transfer.collection import Collection
 from src.music_transfer.config import Config
@@ -11,7 +9,7 @@ from src.music_transfer.devices.adb import Adb
 
 
 def main():
-    config = Config()
+    config = Config.fromToml()
     options = list(filter(lambda f: f != '', config.parser.listPlaylists()))
     
     choices = showMenu(options)

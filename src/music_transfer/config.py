@@ -1,73 +1,105 @@
-import tomllib
+from dataclasses import dataclass
 import os
 from pathlib import Path
+from pydoc import doc
 import sys
+import tomlkit
+import tomllib
 
 from platformdirs import user_config_path, user_music_path
 
 from src.music_transfer.sources.source import Source
 from src.music_transfer.sources.rhythmbox import RhythmBox
-from src.music_transfer.errors import InvalidSource, ConfigNotExist
+from src.music_transfer.errors import InvalidSource
 
-
+@dataclass
 class Config:
-    @staticmethod
-    def sourceParser(source: str, source_file: str | None) -> Source:
-        match source:
-            case 'rhythmbox':
-                return RhythmBox(source_file)
-            case s:
-                raise InvalidSource(s)
-
-    def __init__(self, config_file: str = 'config.toml', source_file: str | None = None):
+    source: str
+    parser: Source
+    local_music_dir: str
+    transfer_method: str
+    va_dir: str
+    prompt_before_transfer: bool
+    only_new: bool
+    playlist_format: str
+    device_music_dir: str
+    
+    @classmethod
+    def default(cls, source_file: Path | str | None = None):
+        source = "rhythmbox"
+        parser = getSource(source, source_file)
+        local_music_dir = user_music_path()
         
+        transfer_method = "adb"
+        va_dir = "VA"
+        prompt_before_transfer = True
+        only_new = False
+        playlist_format = "m3u"
+        device_music_dir = "/storage/self/primary/Music"
+        
+        return cls(source, parser, local_music_dir, transfer_method, va_dir, prompt_before_transfer, only_new, playlist_format, device_music_dir)
+    
+    @classmethod
+    def userConfigFile(cls, create: bool = False) -> Path:
         p = user_config_path('music_transfer')
         
-        if not p.exists():
+        if create and not p.exists():
             os.makedirs(p, exist_ok=True)
             
-        conf = p / config_file
+        conf = p / "config.toml"
         
-        if not conf.exists():
-            createDefault(conf)
-            
-        with open(conf, "rb") as f:
+        if create and not conf.exists():
+            with open(conf, "xt") as f:
+                f.write(cls.default().toToml())
+        
+        return conf
+
+
+    @classmethod
+    def fromToml(cls, file: Path | str | None = None, source_file: Path | str | None = None):
+        if file is None:
+            file = cls.userConfigFile(False)
+        
+        with open(file, "rb") as f:
             data = tomllib.load(f)
+           
+            source = data['local']['import_source']
+            parser = getSource(source, source_file)
+            local_music_dir: str = data['local']['local_music_dir']
             
-            self.parser: Source = self.sourceParser(data['local']['import_source'], source_file)
-            self.local_music_dir: str = data['local']['local_music_dir']
+            transfer_method: str = data['transfer']['method']
+            va_dir: str = data['transfer']['va_dir']
+            prompt_before_transfer: bool = data['transfer']['prompt_before_transfer']
+            only_new: bool = data['transfer']['transfer_only_new']
+            playlist_format: str = data['transfer']['playlist_format']
+            device_music_dir: str = data['transfer']['device_music_dir']
             
-            self.transfer_method: str = data['transfer']['method']
-            self.va_dir: str = data['transfer']['va_dir']
-            self.prompt_before_transfer: bool = data['transfer']['prompt_before_transfer']
-            self.only_new: bool = data['transfer']['transfer_only_new']
-            self.playlist_format: str = data['transfer']['playlist_format']
-            self.device_music_dir: str = data['transfer']['device_music_dir']
-            
+            return cls(source, parser, local_music_dir, transfer_method, va_dir, prompt_before_transfer, only_new, playlist_format, device_music_dir)
 
 
-def createDefault(p: Path):
-    conf = f'''
-[local]
-import_source = "rhythmbox"
-local_music_dir = "{user_music_path()}" # playlists will be created here to be transferred
+    def toToml(self) -> str:
+        t = tomlkit.document()
+        
+        local = tomlkit.table()
+        local.add("import_source", self.source)
+        local.add("local_music_dir", self.local_music_dir)
+        t.add("local", local)
+        
+        transfer = tomlkit.table()
+        transfer.add("method", self.transfer_method)
+        transfer.add("va_dir", self.va_dir)
+        transfer.add("transfer_only_new", self.only_new)
+        transfer.add("prompt_before_transfer", self.prompt_before_transfer)
+        transfer.add("playlist_format", self.playlist_format)
+        transfer.add("device_music_dir", self.device_music_dir)
+        t.add("transfer", transfer)
+        
+        return tomlkit.dumps(t)
 
-[transfer]
-method = "adb"
-va_dir = "VA"                                    # directory to put files that are reside outside of the music library dir
-transfer_only_new = false                        # set to false to disable checking if the files already exist
-prompt_before_transfer = false                   # ask user if they want to transfer the specified number uf songs or not
-playlist_format = "m3u"                          # set to "none" to not create playlists
-device_music_dir = "/storage/self/primary/Music"
 
-[adb]
-command = "adb -d push --sync \\"<source_file>\\" \\"<base>/<dest_file>\\""
-
-'''
-    with open(p, 'xt') as f:
-        f.write(conf)
-    
-    sys.tracebacklimit = 0
-    raise ConfigNotExist(str(p))
-    
-
+def getSource(source: str, source_file: Path | str | None) -> Source:
+    match source.lower():
+        case 'rhythmbox':
+                return RhythmBox(source_file)
+        case s:
+            raise InvalidSource(s)

@@ -15,6 +15,7 @@ dependencies = [
     'progress1bar >= 0.3.0',
     'halo >= 0.0.31',
     'platformdirs >= 3.9.1',
+    'tomlkit >= 0.11.8',
 ]
 
 [tool.setuptools.packages.find]
