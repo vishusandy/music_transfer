@@ -78,7 +78,7 @@ class Collection:
             # num_bytes = FileSize(self.transferSongs()).format()
             # print(f'Transferred {num_bytes}')
             self.transferSongs()
-            print(f'{new} songs transferred')
+            # print(f'{new} songs transferred')
             
         self.createPlaylists(False)
         self.transferPlaylists()

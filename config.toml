@@ -2,7 +2,6 @@
 import_source = "rhythmbox"
 local_music_dir = "/home/andrew/Music/library" # playlists will be created here to be transferred
 
-
 [transfer]
 method = "adb"
 va_dir = "VA"                                    # directory to put files that are reside outside of the music library dir
@@ -10,7 +9,3 @@ transfer_only_new = false                        # set to false to disable check
 prompt_before_transfer = false                   # ask user if they want to transfer the specified number uf songs or not
 playlist_format = "m3u"                          # set to "none" to not create playlists
 device_music_dir = "/storage/self/primary/Music"
-
-
-[adb]
-command = "adb -d push --sync \"<source_file>\" \"<base>/<dest_file>\""
