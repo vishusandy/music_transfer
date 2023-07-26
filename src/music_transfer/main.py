@@ -1,7 +1,7 @@
 from hfilesize import FileSize
 
 from src.music_transfer.menu import showMenu
-from src.collection import Collection
+from music_transfer.collection import Collection
 from src.music_transfer.config import Config
 from src.music_transfer.errors import InvalidPlaylistFormat, InvalidTransferMethod
 from src.music_transfer.playlists.playlist import Playlist

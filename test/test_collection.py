@@ -4,7 +4,7 @@ from copy import copy
 from src.music_transfer.config import Config
 from src.music_transfer.main import transferMethod, playlistFormat
 from .config import rbConfig
-from src.collection import Collection
+from music_transfer.collection import Collection
 
 # See https://docs.python.org/3/library/unittest.html
 

@@ -7,7 +7,7 @@ if [ "$SCRIPT_DIR" != "$PWD" ]; then
 fi
 
 if [ ! -d ".venv" ]; then
-    python -m venv .venv
+    python3 -m venv .venv
     #shellcheck disable=SC1091
     source .venv/bin/activate
 fi
