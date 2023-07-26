@@ -1,6 +1,6 @@
 import unittest
 
-from app.sources.rhythmbox import RhythmBox
+from music_transfer.sources.rhythmbox import RhythmBox
 from ..config import genRbXml
 
 # See https://docs.python.org/3/library/unittest.html

@@ -1,8 +1,8 @@
 from pathlib import Path
 from abc import ABC, abstractmethod
 
-from src.app.config import Config
-from src.app.song import Song
+from src.music_transfer.config import Config
+from src.music_transfer.song import Song
 
 class Playlist(ABC):
     def __init__(self, playlist: str, config: Config):

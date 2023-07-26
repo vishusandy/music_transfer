@@ -1,8 +1,8 @@
-from src.app.config import Config
+from src.music_transfer.config import Config
 from pathlib import Path
 import urllib.parse
 
-from src.app.sources.rhythmbox import RhythmBox
+from src.music_transfer.sources.rhythmbox import RhythmBox
 
 
 def genRbXml() -> str:

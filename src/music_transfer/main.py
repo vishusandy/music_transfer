@@ -1,13 +1,13 @@
 from hfilesize import FileSize
 
-from src.app.menu import showMenu
+from src.music_transfer.menu import showMenu
 from src.collection import Collection
-from src.app.config import Config
-from src.app.errors import InvalidPlaylistFormat, InvalidTransferMethod
-from src.app.playlists.playlist import Playlist
-from src.app.playlists.m3u import M3u
-from src.app.devices.device import Device
-from src.app.devices.adb import Adb
+from src.music_transfer.config import Config
+from src.music_transfer.errors import InvalidPlaylistFormat, InvalidTransferMethod
+from src.music_transfer.playlists.playlist import Playlist
+from src.music_transfer.playlists.m3u import M3u
+from src.music_transfer.devices.device import Device
+from src.music_transfer.devices.adb import Adb
 
 
 def main():

@@ -1,8 +1,8 @@
 import tomllib
 
-from src.app.sources.source import Source
-from src.app.sources.rhythmbox import RhythmBox
-from src.app.errors import InvalidSource
+from src.music_transfer.sources.source import Source
+from src.music_transfer.sources.rhythmbox import RhythmBox
+from src.music_transfer.errors import InvalidSource
 
 
 class Config:
@@ -15,6 +15,7 @@ class Config:
                 raise InvalidSource(s)
 
     def __init__(self, config_file: str = 'config.toml', source_file: str | None = None):
+        
         with open(config_file, "rb") as f:
             data = tomllib.load(f)
             

@@ -1,9 +1,9 @@
 import sys
 import shlex, subprocess
 
-from src.app.config import Config
+from src.music_transfer.config import Config
 from .device import Device
-from src.app.song import Song
+from src.music_transfer.song import Song
 
 
 class Adb(Device):

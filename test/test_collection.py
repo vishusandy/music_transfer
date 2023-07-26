@@ -1,8 +1,8 @@
 import unittest
 from copy import copy
 
-from src.app.config import Config
-from src.app.main import transferMethod, playlistFormat
+from src.music_transfer.config import Config
+from src.music_transfer.main import transferMethod, playlistFormat
 from .config import rbConfig
 from src.collection import Collection
 

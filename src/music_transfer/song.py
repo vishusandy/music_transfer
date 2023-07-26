@@ -4,7 +4,7 @@ import re
 
 from tinytag import TinyTag
 
-from src.app.config import Config
+from src.music_transfer.config import Config
 
 path_sanitize = re.compile("[\"'\\…|><*+\[\]:?]")
 

@@ -2,7 +2,7 @@ import unittest
 from pathlib import Path
 from copy import copy
 
-from src.app.song import Song
+from src.music_transfer.song import Song
 from .config import rbConfig
 
 # See https://docs.python.org/3/library/unittest.html

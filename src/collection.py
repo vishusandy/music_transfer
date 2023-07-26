@@ -4,11 +4,11 @@ from progress1bar import ProgressBar
 from halo import Halo
 from hfilesize import FileSize
 
-from src.app.config import Config
-from src.app.song import Song
-from src.app.playlists.playlist import Playlist
-from src.app.devices.device import Device
-from src.app.util import askYes
+from src.music_transfer.config import Config
+from src.music_transfer.song import Song
+from src.music_transfer.playlists.playlist import Playlist
+from src.music_transfer.devices.device import Device
+from src.music_transfer.util import askYes
 
 
 class Collection:
