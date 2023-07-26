@@ -3,7 +3,7 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "simple-term-menu"
+name = "app"
 readme = "README.md"
 requires-python = ">=3.8"
 license = { file = "LICENSE" }
@@ -12,6 +12,8 @@ dependencies = [
     'simple-term-menu >= 1.6.1',
     'tinytag >= 1.9.0',
     'hfilesize >= 0.1.0',
+    'progress1bar >= 0.3.0',
+    'halo >= 0.0.31',
 ]
 
 [tool.setuptools.packages.find]

@@ -11,13 +11,11 @@ class Adb(Device):
         self.config = config
     
     def fileExists(self, file: str, size: int | None = None) -> bool:
-        rst = subprocess.run(["adb", "-d", "shell", "stat", "-c", "%s", f'"{file}"'], capture_output=True, encoding="utf8")
+        rst = subprocess.run(["adb", "-d", "shell", "stat", "-c", "%s", f'"{self.config.device_music_dir}/{file}"'], capture_output=True, encoding="utf8")
         return rst.returncode == 0 and (size is None or size == int(rst.stdout))
     
     def songExists(self, song: Song) -> bool:
         dest = f'{self.config.device_music_dir}/{song.dest}'
-        # rst = subprocess.run(["adb", "-d", "shell", "stat", "-c", "%s", f'"{dest}"'], capture_output=True, encoding="utf8")
-        # return rst.returncode == 0 and int(rst.stdout) == int(song.tags.filesize)
         return self.fileExists(song.dest, int(song.tags.filesize))
     
     def transferSong(self, song: Song) -> int:

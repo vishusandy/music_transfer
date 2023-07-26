@@ -22,30 +22,17 @@ def main():
     
     dev = transferMethod(config)
     pl = playlistFormat(config)
+    
     c = Collection(choices, config, pl, dev)
-    
-    new = len(c.new_songs)
-    old = len(c.songs) - new
-    
-    if old > 0:
-        print(f'About to transfer {new} new songs ({old} songs already exist on device)')
-    else:
-        print(f'About to transfer {new} new songs')
-    
-    c.createPlaylists(True)
-    
-    num_bytes = FileSize(c.transferSongs()).format()
+    c.transfer()
     
     
-    print(f'Transferred {num_bytes}')
-
-    c.transferPlaylists()
-    
-    
-def playlistFormat(config: Config) -> Playlist:
+def playlistFormat(config: Config) -> Playlist | None:
     match config.playlist_format.lower():
         case 'm3u':
             return M3u
+        case 'none':
+            return None
         case f:
             raise InvalidPlaylistFormat(f)
         

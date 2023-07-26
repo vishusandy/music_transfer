@@ -23,6 +23,8 @@ class Config:
             
             self.transfer_method: str = data['transfer']['method']
             self.va_dir: str = data['transfer']['va_dir']
+            self.prompt_before_transfer: bool = data['transfer']['prompt_before_transfer']
+            self.only_new: bool = data['transfer']['transfer_only_new']
             self.playlist_format: str = data['transfer']['playlist_format']
             self.device_music_dir: str = data['transfer']['device_music_dir']
             
