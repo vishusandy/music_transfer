@@ -18,10 +18,13 @@ class Playlist(ABC):
     def ext() -> str:
         raise NotImplementedError("Method not implemented")
     
-    def devicePlaylistPath(self) -> str:
+    def devicePlaylistPath(self, device_dir: str | None = None) -> str:
         name = Path(self.playlist).stem
         
-        return f'{name}.{self.ext()}'
+        if device_dir is not None:
+            return f'{device_dir}/{name}.{self.ext()}'
+        else:
+            return f'{name}.{self.ext()}'
     
     def localPlaylistPath(self) -> str:
         name = Path(self.playlist).stem

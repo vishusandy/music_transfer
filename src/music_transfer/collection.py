@@ -1,4 +1,5 @@
 from pathlib import Path
+import sys
 
 from progress1bar import ProgressBar
 from halo import Halo
@@ -37,68 +38,84 @@ class Collection:
 
     def checkNewFiles(self):
         if self.config.only_new:
-            spinner = Halo(text='Checking for new files', spinner='point', color='')
-            spinner.start()
+            if not self.config.quiet:
+                spinner = Halo(text='Checking for new files', spinner='point', color='')
+                spinner.start()
+            
             for f, s in self.songs.items():
                 if not self.device.songExists(s):
-                    print(f'file {f} does not exist')
                     self.transfer_songs[f] = s
-            spinner.stop()
+            if not self.config.quiet:
+                spinner.stop()
         else:
             self.transfer_songs = self.songs
+            
+        if self.config.list_songs:
+            if len(self.transfer_songs) >0:
+                print('Songs to transfer:')
+            for f in self.transfer_songs.keys():
+                print(f)
 
-    def createPlaylists(self, output: bool = False):
+    def createPlaylists(self):
         for p in self.playlists:
             f = p.createPlaylist()
-            if output:
-                print(f'created "{f}"')
+            self.config.print(f'created "{f}"')
 
     def transfer(self):
         new = len(self.transfer_songs)
         old = len(self.songs) - new
         
         if new == 0 and self.config.only_new == True:
-            print(f'No new songs to transfer')
+            self.config.print(f'No new songs to transfer')
         elif new == 0:
-            print(f'No songs to transfer')
+            self.config.print(f'No songs to transfer')
         else:
             total_size = sum(map(lambda s: s.tags.filesize, self.transfer_songs.values()))
             total = FileSize(total_size).format()
             
-            if old > 0:
-                print(f'Found {new} new songs ({total}) to transfer ({old} songs already exist on device)')
-            else:
-                print(f'Found {new} songs ({total}) to transfer')
+            if not self.config.quiet or self.config.prompt_before_transfer:
+                print()
+                if old > 0:
+                    self.config.print(f'Found {new} new songs ({total}) to transfer ({old} songs already exist on device)')
+                else:
+                    self.config.print(f'Found {new} songs ({total}) to transfer')
             
-            if self.config.prompt_before_transfer == True:
-                if askYes("Continue? [Y/n]") == False:
-                    print('Aborting...')
+            if self.config.prompt_before_transfer:
+                if askYes("Continue? [Y/n]") != True:
+                    print('Aborting...', file=sys.stderr)
                     return
             
             self.transferSongs()
             
-        self.createPlaylists(False)
+        self.createPlaylists()
         self.transferPlaylists()
 
     def transferSongs(self) -> int:
         i = 0
-        with ProgressBar(total=len(self.transfer_songs), completed_message='Songs transferred', clear_alias=True, show_duration=True, show_prefix=False) as p:
+        if self.config.quiet:
             for s in self.transfer_songs.values():
-                p.alias = Path(s.file).stem
-                i += self.device.transferSong(s)
-                p.count += 1
-            
+                i += self.device.transferSong(s) 
+        else:
+            with ProgressBar(total=len(self.transfer_songs), completed_message='Songs transferred', clear_alias=True, show_duration=True, show_prefix=False) as p:
+                for s in self.transfer_songs.values():
+                    p.alias = Path(s.file).stem
+                    i += self.device.transferSong(s)
+                    p.count += 1
+        
         return i
     
     def transferPlaylists(self):
         if len(self.playlists) != 0:
-            spinner = Halo(text='Transferring playlists', spinner='point', color='')
-            spinner.start()
+            if not self.config.quiet:
+                spinner = Halo(text='Transferring playlists', spinner='point', color='')
+                spinner.start()
             for p in self.playlists:
                 src = p.localPlaylistPath()
-                dest = self.config.device_music_dir + '/' + p.devicePlaylistPath()
+                # dest = self.config.device_music_dir + '/' + p.devicePlaylistPath()
+                dest = p.devicePlaylistPath(self.config.device_music_dir)
                 size = Path(src).stat().st_size
                 
                 if not self.device.fileExists(dest, size):
                     self.device.transferFile(src, dest)
-            spinner.stop()
+            if not self.config.quiet:
+                spinner.stop()
