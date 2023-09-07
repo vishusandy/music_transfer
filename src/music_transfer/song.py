@@ -6,14 +6,14 @@ from tinytag import TinyTag
 
 from src.music_transfer.config import Config
 
-path_sanitize = re.compile("[\"'\\…|><*+\[\]:?]")
+# path_sanitize = re.compile("[\"'\\…|><*+\[\]:?]")
+# path_sanitize = re.compile("[\"'\\…|><*+\\[\\]:?]")
+path_sanitize = re.compile(r"[\"'\…|><*+\[\]:?]")
 
 class Song:
     
     @staticmethod
     def sanitize(s: str) -> str:
-        # return s.replace('\\', '\\\\').replace('\'', '\\\'')
-        # return s.replace('\'', '').replace(':', '')
         return re.sub(path_sanitize, '', s)
     
     def __init__(self, file: str, config: Config):
