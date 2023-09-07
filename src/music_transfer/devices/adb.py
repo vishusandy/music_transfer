@@ -10,6 +10,10 @@ class Adb(Device):
     def __init__(self, config: Config):
         self.config = config
     
+    def fileSize(self, file: str) -> int | None:
+        rst = subprocess.run(["adb", "-d", "shell", "stat", "-c", "%s", f'"{self.config.device_music_dir}/{file}"'], capture_output=True, encoding="utf8")
+        return None if rst.returncode != 0 else int(rst.returncode)
+        
     def fileExists(self, file: str, size: int | None = None) -> bool:
         rst = subprocess.run(["adb", "-d", "shell", "stat", "-c", "%s", f'"{self.config.device_music_dir}/{file}"'], capture_output=True, encoding="utf8")
         return rst.returncode == 0 and (size is None or size == int(rst.stdout))
