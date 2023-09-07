@@ -108,7 +108,7 @@ class Config:
         return tomlkit.dumps(doc)
 
 
-def getSource(source: str, source_file: Path | str | None) -> Source:
+def getSource(source: str, source_file: Path | str | None = None) -> Source:
     match source.lower():
         case 'rhythmbox':
                 return RhythmBox(source_file)

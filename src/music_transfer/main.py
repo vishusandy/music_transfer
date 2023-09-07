@@ -1,6 +1,7 @@
 import argparse
 from random import choices
 import sys
+from typing import Type
 
 from src.music_transfer.menu import showMenu
 from music_transfer.collection import Collection
@@ -148,7 +149,8 @@ def run(config: Config):
     c.transfer()
 
 
-def playlistFormat(config: Config) -> Playlist | None:
+# T = TypeVar('T', bound=Playlist)
+def playlistFormat(config: Config) -> Type[Playlist] | None:
     match config.playlist_format.lower():
         case 'm3u':
             return M3u

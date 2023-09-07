@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+from typing import Type
 
 from progress1bar import ProgressBar
 from halo import Halo
@@ -13,7 +14,7 @@ from src.music_transfer.util import askYes
 
 
 class Collection:
-    def __init__(self, playlists: list[str], config: Config, pl_format: Playlist | None, device: Device):
+    def __init__(self, playlists: list[str], config: Config, pl_format: Type[Playlist] | None, device: Device):
         self.config: Config = config
         self.playlist_names: list[str] = playlists
         self.playlists: list[Playlist] = []
@@ -24,7 +25,7 @@ class Collection:
         self.getSongs(pl_format)
         self.checkNewFiles()
 
-    def getSongs(self, pl_format: Playlist | None):
+    def getSongs(self, pl_format: Type[Playlist] | None):
         if pl_format is not None:
             for p in self.playlist_names:
                 c: Playlist = pl_format(p, self.config)
@@ -37,6 +38,7 @@ class Collection:
                         self.songs[f] = Song(f, self.config)
 
     def checkNewFiles(self):
+        spinner = None
         if self.config.only_new:
             if not self.config.quiet:
                 spinner = Halo(text='Checking for new files', spinner='point', color='')
@@ -45,7 +47,7 @@ class Collection:
             for f, s in self.songs.items():
                 if not self.device.songExists(s):
                     self.transfer_songs[f] = s
-            if not self.config.quiet:
+            if spinner and not self.config.quiet:
                 spinner.stop()
         else:
             self.transfer_songs = self.songs
@@ -105,6 +107,7 @@ class Collection:
         return i
     
     def transferPlaylists(self):
+        spinner = None
         if len(self.playlists) != 0:
             if not self.config.quiet:
                 spinner = Halo(text='Transferring playlists', spinner='point', color='')
@@ -117,5 +120,5 @@ class Collection:
                 
                 if not self.device.fileExists(dest, size):
                     self.device.transferFile(src, dest)
-            if not self.config.quiet:
+            if spinner and not self.config.quiet:
                 spinner.stop()
