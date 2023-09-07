@@ -27,6 +27,10 @@ class Adb(Device):
         rst = subprocess.run(["adb", "-d", "push", "--sync", song.file, dest], capture_output=False, stdout=subprocess.DEVNULL)
         return song.tags.filesize if rst.returncode == 0 else 0
     
+    def downloadFile(self, remote: str, local: str) -> bool:
+        rst = subprocess.run(["adb", "-d", "pull", remote, local], capture_output=False, stdout=subprocess.DEVNULL)
+        return rst.returncode == 0
+
     def transferFile(self, file: str, dest: str) -> bool:
         rst = subprocess.run(["adb", "-d", "push", "--sync", file, dest], capture_output=False, stdout=subprocess.DEVNULL)
         return rst.returncode == 0
